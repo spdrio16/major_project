@@ -1,2 +1,2 @@
 # major_project
-Skin Cancer Detection Using CNN
+Gold price prediction Using Fuzzy Logic
