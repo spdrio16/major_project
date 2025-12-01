@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+pandas
+numpy
+scikit-learn
+keras
+tensorflow
+matplotlib
+yfinance
+scikit-fuzzy
+jinja2
