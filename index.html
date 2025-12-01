@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GOLD PRICE PREDICTION USING FUZZY LOGIC</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #d0e6a5 0%, #ffdd94 100%);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        h1, h2, h3 {
+            text-align: center;
+            color: #4a148c;
+        }
+        form {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        select, button {
+            padding: 10px;
+            margin: 0 10px;
+            border-radius: 8px;
+            border: none;
+            font-size: 1em;
+        }
+        button {
+            background-color: #4a148c;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #6a1b9a;
+        }
+        table {
+            width: 60%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #4db6ac;
+            color: white;
+        }
+        td {
+            background-color: #e0f2f1;
+        }
+        .result-box {
+            width: 60%;
+            margin: 20px auto;
+            background-color: #f3e5f5;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.2em;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        img {
+            max-width: 90%;
+            display: block;
+            margin: 30px auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+    <h1>GOLD PRICE PREDICTION USING FUZZY LOGIC</h1>
+
+    <form method="post" action="/predict">
+        <label for="model_type"><strong>Choose your model:</strong></label>
+        <select name="model_type" id="model_type" required>
+            <option value="lstm">LSTM</option>
+            <option value="bilstm">Bi-LSTM</option>
+            <option value="linear">Linear Regression</option>
+        </select>
+        <button type="submit">Show Results</button>
+    </form>
+
+    {% if selected_model %}
+        <h2>Results for Model: {{ selected_model|upper }}</h2>
+
+        <h3>Fuzzy Function MSE Results</h3>
+        <table>
+            <tr>
+                <th>Fuzzy Function</th>
+                <th>MSE</th>
+            </tr>
+            {% for fuzzy, metrics in results.items() %}
+            <tr>
+                <td>{{ fuzzy|capitalize }}</td>
+                <td>{{ "%.6f"|format(metrics[selected_model]) }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <h3>Average Values</h3>
+        <table>
+            <tr>
+                <th>Today's Price</th>
+                <th>3-Day Average</th>
+                <th>5-Day Average</th>
+            </tr>
+            <tr>
+                <td>${{ today_price }}</td>
+                <td>${{ avg_3day }}</td>
+                <td>${{ avg_5day }}</td>
+            </tr>
+        </table>
+
+        <div class="result-box">
+            <strong>Best Fuzzy Function:</strong> {{ best_model|capitalize }}
+        </div>
+
+        <div>
+            <h3 style="text-align:center;">Gold Price Chart</h3>
+            <img src="/{{ plot_path }}?v={{ range(1000)|random }}" alt="Gold Price Plot">
+        </div>
+    {% endif %}
+</body>
+</html>
